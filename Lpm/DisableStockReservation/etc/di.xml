@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Magento\InventorySourceSelectionApi\Model\GetSourceItemQtyAvailableInterface" type="Lpm\DisableStockReservation\Model\GetSourceItemQtyAvailableService"/>
+    <preference for="Magento\InventorySalesApi\Model\GetStockItemDataInterface" type="Lpm\DisableStockReservation\Model\ResourceModel\GetStockItemData"/>
+    <type name="Magento\Sales\Model\Service\OrderService">
+        <plugin name="inventory_sales_source_deduction_processor" type="Lpm\DisableStockReservation\Plugin\SourceDeductionProcessor"/>
+    </type>
+    <type name="Magento\CatalogInventory\Model\StockStateProvider">
+        <plugin name="inventory_stockstateprovider" type="Lpm\DisableStockReservation\Plugin\StockStateProvider"/>
+    </type>
+    <!--vendor/magento/module-inventory-source-deduction-api/etc/di.xml-->
+    <preference for="Magento\InventorySourceDeductionApi\Model\SourceDeductionServiceInterface" type="Lpm\DisableStockReservation\Model\SourceDeductionService"/>
+
+    <!--vendor/magento/module-inventory-sales/etc/di.xml-->
+    <type name="Magento\CatalogInventory\Api\StockStateInterface">
+        <plugin name="check_quote_item_qty" type="Lpm\DisableStockReservation\Plugin\CheckQuoteItemQtyPlugin"/>
+    </type>
+</config>
